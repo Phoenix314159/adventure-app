@@ -1,8 +1,8 @@
 const express = require('express'),
     bodyParser = require('body-parser'),
     mainCtrl = require('./mainCtrl'),
-    app = express(),
     scriptsArray = require('./fileArray'),
+    app = express(),
     cors = require('cors'),
     corsOptions = {
         origin: `http://localhost:${mainCtrl.port}`
