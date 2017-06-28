@@ -109,22 +109,10 @@ angular.module('adventure').service('mainService', function ($http, uiGmapGoogle
                 }
             }
         }
-        vm.getCoins = () => { //API call (function definition) for coins
+        vm.getAllPrizes = () => { //API call (function definition) for all prizes
             return $http({
                 method: 'GET',
-                url: '/api/coins'
-            })
-        }
-        vm.getKey = () => { //API call (function definition) for keys
-            return $http({
-                method: 'GET',
-                url: '/api/keys'
-            })
-        }
-        vm.getCPrize = () => { //API call (function definition) for cinemark prizes
-            return $http({
-                method: 'GET',
-                url: '/api/cprizes'
+                url: '/api/allprizes'
             })
         }
     })

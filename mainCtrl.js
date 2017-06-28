@@ -1,52 +1,26 @@
-const axios = require('axios')
+const axios = require('axios'),
+    filter = require('./filterMulti')
 
-let filterMultiDimArr = arr => { //function to filter duplicate arrays from array
-    return arr.filter(function (item) {
-        if (!this.hasOwnProperty(item[1])) {
-            return this[item[1]] = true
-        }
-        return false
-    }, {})
-}
 module.exports = {
     port: 3070,
-    getCoins: (req, res) => {
-        axios({                     //make API call
-            method: 'get',
-            url: 'https://staging.seek.fit/api/challenge/?loot_type=5'
-        }).then(resp => {
-            let data = resp.data.features[0].geometry.coordinates,
-                filteredData = filterMultiDimArr(data) //filter data when it comes back
-            res.status(200).json(filteredData)  //shoot to front-end
-        })
-    },
-    getKeys: (req, res) => {
-        axios({
-            method: 'get',
-            url: 'https://staging.seek.fit/api/challenge/?loot_type=4'
-        }).then(resp => {
-            let data = resp.data.features[0].geometry.coordinates,
-                filteredData = filterMultiDimArr(data)
-            res.status(200).json(filteredData)
-        })
-    },
-    getCPrizes: (req, res) => {
-        axios({
-            method: 'get',
-            url: 'https://staging.seek.fit/api/challenge/?loot_type=637'
-        }).then(resp => {
-            let data = resp.data.features[0].geometry.coordinates,
-                filteredData = filterMultiDimArr(data)
-            res.status(200).json(filteredData)
-        })
-    },
-    fileArr: ['/dist',
-        '/node_modules/angular/',
-        '/node_modules/lodash/',
-        '/node_modules/angular-google-maps/dist/',
-        '/node_modules/angular-simple-logger/dist/',
-        '/node_modules/angular-spinkit/build/',
-        '/node_modules/jquery/dist',
-        '/node_modules/bootstrap/dist/js/',
-        '/node_modules/bootstrap/dist/css/']
+    getAllPrizes: (req, res) => {
+        axios.all([
+            axios.get('https://staging.seek.fit/api/challenge/?loot_type=5'), //make API call for coins
+            axios.get('https://staging.seek.fit/api/challenge/?loot_type=4'), //make API call for keys
+            axios.get('https://staging.seek.fit/api/challenge/?loot_type=637') //make API call for cinemark prizes
+        ])
+            .then(axios.spread((coinRes, keyRes, cPrizeRes) => {
+                let coinData = coinRes.data.features[0].geometry.coordinates,
+                    keyData = coinRes.data.features[0].geometry.coordinates,
+                    cPrizeData = cPrizeRes.data.features[0].geometry.coordinates,
+                    arr1 = filter.filterMultiDimArr(coinData),  // keep coordinates separate
+                    arr2 = filter.filterMultiDimArr(keyData),
+                    arr3 = filter.filterMultiDimArr(cPrizeData)
+                res.status(200).json({  //shoot to front-end
+                    coinData: arr1,
+                    keyData: arr2,
+                    cPrizeData: arr3
+                })
+            }))
+    }
 }
