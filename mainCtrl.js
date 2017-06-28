@@ -11,7 +11,7 @@ module.exports = {
         ])
             .then(axios.spread((coinRes, keyRes, cPrizeRes) => {
                 let coinData = coinRes.data.features[0].geometry.coordinates,
-                    keyData = coinRes.data.features[0].geometry.coordinates,
+                    keyData = keyRes.data.features[0].geometry.coordinates,
                     cPrizeData = cPrizeRes.data.features[0].geometry.coordinates,
                     arr1 = filter.filterMultiDimArr(coinData),  // keep coordinates separate
                     arr2 = filter.filterMultiDimArr(keyData),
