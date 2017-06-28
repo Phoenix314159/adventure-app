@@ -6,6 +6,7 @@ const gulp = require('gulp'),
     cachebust = new CacheBuster(),
     print = require('gulp-print'),
     ngAnnotate = require('gulp-ng-annotate'),
+    htmlmin = require('gulp-htmlmin'),
     uglify = require('gulp-uglify'),
     cssmin = require('gulp-cssmin'),
     gulpBrowser = require("gulp-browser"),
@@ -14,10 +15,15 @@ const gulp = require('gulp'),
         options: {presets: ["es2015"]}
     }]
 
+gulp.task('icons', () => {
+    gulp.src('./client/icons/**/*')
+        .pipe(gulp.dest('./dist/icons'))
+})
+
 gulp.task('build-js', function () {
     let stream = gulp.src('./client/js/**/*.js')
-        .pipe(gulpBrowser.browserify(transforms))
         .pipe(sourcemaps.init())
+        .pipe(gulpBrowser.browserify(transforms))
         .pipe(print())
         .pipe(concat('bundle.min.js'))
         .pipe(ngAnnotate())
@@ -27,10 +33,6 @@ gulp.task('build-js', function () {
     return stream
 })
 
-gulp.task('views', () => {
-    return gulp.src('./client/views/**/*')
-        .pipe(gulp.dest('./dist/views'))
-})
 
 gulp.task('build-css', () => {
     return gulp.src('./client/styles/**/*')
@@ -44,9 +46,11 @@ gulp.task('build-css', () => {
         .pipe(gulp.dest('./dist/styles'))
 })
 
-gulp.task('icons', () => {
-    gulp.src('./client/icons/**/*')
-        .pipe(gulp.dest('./dist/icons'))
+gulp.task('views', () => {
+    return gulp.src('./client/views/**/*')
+        .pipe(print())
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(gulp.dest('./dist/views'))
 })
 
 gulp.task('build', ['views', 'build-css', 'build-js', 'icons'], () => {
