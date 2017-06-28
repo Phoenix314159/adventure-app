@@ -1,0 +1,55 @@
+<div class="container">
+	<h1>Go Hunt for Some Prizes</h1>
+</div>
+<div class="container">
+	<h4>select a prize to show points on map</h4>
+</div>
+<div id="selector" class="container btn btn-warning">
+	<select class="form-control" ng-model="map.selected" ng-change="map.select()"
+	        ng-options="name for name in map.menu">
+		<option value="">- Please Choose -</option>
+	</select>
+	<!-- dropdown menu activates corrdinate search on click -->
+</div>
+<div class="container button">
+	<button ng-show="!map.showLoad" ng-class="{'btn btn-danger':!toggle, 'btn btn-primary':toggle}"
+	        class="btn btn-primary" ng-click="map.toggleMaps(); toggle = !toggle">
+		<!-- button color changes to show heat map view or point view -->
+		<span ng-show="toggle">Show Prizes</span>   <!-- button text changes to show heat map view or point view -->
+		<span ng-hide="toggle">Show Heatmap</span>  <!-- toggle between both maps to view each one -->
+	</button>
+	<div class="search" ng-show="map.showLoad">Loading ...</div>
+	<!-- when api call is made, this shows until data comes back -->
+	<rotating-plane-spinner ng-show="map.showLoad"></rotating-plane-spinner>
+</div>
+<div ng-show="map.showMap" id="map2" class="container"></div> <!-- heat map -->
+<div class="container" ng-hide="map.showMap">
+	<div id="map"> <!-- point map -->
+		<ui-gmap-google-map id="map1" center="map.map.center" zoom="map.map.zoom">  <!-- point map -->
+			<ui-gmap-marker ng-if="map.selected === 'Coins' ? true : false"
+			                ng-repeat="points in map.coinMarkers track by $index"
+			                coords="{ latitude: points[1], longitude: points[0] }"
+			                options="map.coinOptions.options"
+			                idkey="map.coinId"
+			                events="map.coinOptions.options.markerEvents.events">
+			</ui-gmap-marker>
+			<ui-gmap-marker ng-if="map.selected === 'Keys' ? true : false"
+			                ng-repeat="points in map.keyMarkers track by $index"
+			                coords="{ latitude: points[1], longitude: points[0] }"
+			                options="map.keyOptions.options"
+			                idkey="map.keyId"
+			                events="map.keyOptions.options.markerEvents.events">
+			</ui-gmap-marker>
+			<ui-gmap-marker ng-if="map.selected === 'Cinemark Prizes' ? true : false"
+			                ng-repeat="points in map.cpMarkers track by $index"
+			                coords="{ latitude: points[1], longitude: points[0] }"
+			                options="map.cPrizeOptions.options"
+			                idkey="map.cpId"
+			                events="map.cPrizeOptions.options.markerEvents.events">
+			</ui-gmap-marker>
+		</ui-gmap-google-map>
+	</div>
+</div>
+
+
+
