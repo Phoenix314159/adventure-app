@@ -35,7 +35,7 @@ gulp.task('build-js', function () {
 
 
 gulp.task('build-css', () => {
-    return gulp.src('./client/styles/**/*')
+    return gulp.src('./client/styles/**/*.scss')
         .pipe(sourcemaps.init())
         .pipe(print())
         .pipe(sass())
