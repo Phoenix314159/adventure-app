@@ -1,4 +1,5 @@
-import config from './../../config';
+import config from './../../config/config';
+
 angular.module('adventure', ['uiGmapgoogle-maps', 'angular-spinkit'])
     .config(['uiGmapGoogleMapApiProvider', function (GoogleMapApi) {
         GoogleMapApi.configure({

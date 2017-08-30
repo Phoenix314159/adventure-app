@@ -1,22 +1,15 @@
 const express = require('express'),
-    bodyParser = require('body-parser'),
-    mainCtrl = require('./mainCtrl'),
-    scriptsArray = require('./fileArray'),
-    app = express(),
-    cors = require('cors'),
-    corsOptions = {
-        origin: `http://localhost:${mainCtrl.port}`
-    }
-
-app.use(cors(corsOptions))
-app.use(bodyParser.json())
+    scriptsArray = require('./services/fileArray'),
+    config = require('./config/config'),
+    app = express();
 
 scriptsArray.fileArr.map(file => {
-    app.use(express.static(__dirname + file)) //iterates over array and loads middleware
+    app.use(express.static(__dirname + file));
 })
 
-app.get('/api/allprizes', mainCtrl.getAllPrizes)
+require('./middleware/middleware')(app);
+require('./routes/getAllPrizes')(app);
 
-app.listen(mainCtrl.port, () => {
-    console.log(`listening on port ${mainCtrl.port}`)
+app.listen(config.port, () => {
+    console.log(`listening on port ${config.port}`)
 })

@@ -16,7 +16,6 @@
     "babelify": "^7.3.0",
     "body-parser": "^1.17.2",
     "bootstrap": "^3.3.7",
-    "cors": "^2.8.3",
     "express": "^4.15.3",
     "gulp": "^3.9.1",
     "gulp-browser": "^3.0.4",

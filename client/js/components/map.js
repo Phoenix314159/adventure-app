@@ -13,29 +13,32 @@ angular.module('adventure').component('map', {
         vm.menu = mainService.arr //gets select menu options from mainService
 
         uiGmapGoogleMapApi.then(res => { // need to wait for the google maps object to come back in mainService
+            mainService.getAllPrizes().then(res => {  // executes API call to get all prize coordinate data
 
-            let buildMarkerArray = mainService.buildMarkerArray,
-                buildHeatArray = mainService.buildHeatArray
-            vm.initMap = mainService.initMap // initialize heat map when ready
-            vm.coinOptions = mainService.coinOptions
-            vm.keyOptions = mainService.keyOptions
-            vm.cPrizeOptions = mainService.cPrizeOptions
-            vm.select = () => { // function to display marker type depending on selected element
-                vm.coinMarkers = [] // array to store coin marker coordinates
-                vm.coinId = [] // array to store coin marker ids
-                vm.cPointsHeat = [] // array to store coin heat map points
-                vm.keyMarkers = [] // array to store key marker coordinates
-                vm.keyId = [] // array to store key marker ids
-                vm.keyPointsHeat = [] // array to store key heat map points
-                vm.cpMarkers = [] // array to store cinemark prize marker coordinates
-                vm.cpId = [] // array to store cinemark prize marker ids
-                vm.cPrizePointsHeat = [] //array to store cinemark prize heat map points
-                vm.showLoad = true // show loading spinner
+                vm.coinPoints = res.data.coinData // arrays from server containing coordinate data
+                vm.keyPoints = res.data.keyData
+                vm.cPrizePoints = res.data.cPrizeData
 
-                mainService.getAllPrizes().then(res => {  // executes API call to get all prize coordinate data
-                    vm.coinPoints = res.data.coinData // arrays from server containing coordinate data
-                    vm.keyPoints = res.data.keyData
-                    vm.cPrizePoints = res.data.cPrizeData
+                let buildMarkerArray = mainService.buildMarkerArray,
+                    buildHeatArray = mainService.buildHeatArray
+
+                vm.initMap = mainService.initMap // initialize heat map when ready
+                vm.coinOptions = mainService.coinOptions
+                vm.keyOptions = mainService.keyOptions
+                vm.cPrizeOptions = mainService.cPrizeOptions
+
+                vm.select = () => { // function to display marker type depending on selected element
+                    vm.coinMarkers = [] // array to store coin marker coordinates
+                    vm.coinId = [] // array to store coin marker ids
+                    vm.cPointsHeat = [] // array to store coin heat map points
+                    vm.keyMarkers = [] // array to store key marker coordinates
+                    vm.keyId = [] // array to store key marker ids
+                    vm.keyPointsHeat = [] // array to store key heat map points
+                    vm.cpMarkers = [] // array to store cinemark prize marker coordinates
+                    vm.cpId = [] // array to store cinemark prize marker ids
+                    vm.cPrizePointsHeat = [] //array to store cinemark prize heat map points
+                    vm.showLoad = true // show loading spinner
+
                     vm.toggleMaps = () => { // function to toggle between showing heat map and point map
                         vm.showMap = !vm.showMap
                         vm.select()  // initiates new API search for coordinates depending on what element is selected
@@ -69,17 +72,17 @@ angular.module('adventure').component('map', {
                     }
                     switch (vm.selected) {
                         case 'Coins':
-                            vm.getCoins()
-                            break
+                            vm.getCoins();
+                            break;
                         case 'Keys':
-                            vm.getKeys()
-                            break
+                            vm.getKeys();
+                            break;
                         case 'Cinemark Prizes':
-                            vm.getCPrize()
-                            break
+                            vm.getCPrize();
+                            break;
                     }
-                })
-            }
+                }
+            })
         })
     }
 })
