@@ -80,7 +80,6 @@ angular.module('adventure').component('map', {
             break
         }
       }
-
     }
     getGoogleMap()
   }

@@ -29,7 +29,7 @@ gulp.task('build-js', function () {
     .pipe(print())
     .pipe(concat('bundle.min.js'))
     .pipe(ngAnnotate())
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(write('./'))
     .pipe(gulp.dest('./dist/js'))
 })

@@ -69,7 +69,7 @@ rotating-plane-spinner {
   font-family: $family;
 }
 
-@media only screen and (max-width: 1440px) {
+@media (min-width: 1440px) and (max-width: 1800px) {
   #selector {
     width: 19%;
   }

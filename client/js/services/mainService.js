@@ -30,7 +30,7 @@ angular.module('adventure').service('mainService', function ($http, uiGmapGoogle
     vm.createInfoWindow = point => { // creates info window depending on coordinate
       const infowindow = new google.InfoWindow({
         content: `Latitude: ${point.coords.latitude.toFixed(2)} <br> 
-                          Longitude: ${point.coords.longitude.toFixed(2)}` //info window to display coordinates when clicked on
+                  Longitude: ${point.coords.longitude.toFixed(2)}` //info window to display coordinates when clicked on
       })
       return infowindow
     }
@@ -111,6 +111,7 @@ angular.module('adventure').service('mainService', function ($http, uiGmapGoogle
     }
   }
   getGoogleMap()
+
   vm.getAllPrizes = () => { //API call (function definition) for all prizes
     return $http({
       method: 'GET',
